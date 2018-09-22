@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Switch;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -18,15 +19,28 @@ public class MainActivity extends AppCompatActivity {
         button1.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                String data1 = "on";
-                String data2 = "off";
+                String data;
                 Intent intent = new Intent(MainActivity.this,Main2Activity.class);
                 if(switch1.isChecked())
-                    intent.putExtra("extra_data",data1);
+                    data = "1 is on";
                 else
-                    intent.putExtra("extra_data",data2);
-                startActivity(intent);
+                    data = "1 is off";
+                intent.putExtra("extra_data",data);
+                startActivityForResult(intent,1);
             }
         });
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        TextView textview = (TextView) findViewById(R.id.text_1);
+        switch (requestCode){
+            case 1:
+                if(resultCode == RESULT_OK){
+                    String returnedData = data.getStringExtra("data_return");
+                    textview.setText(returnedData);
+                }
+                break;
+            default:
+        }
     }
 }
